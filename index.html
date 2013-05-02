@@ -32,7 +32,7 @@
                 <svg id="ai" xmlns="http://www.w3.org/2000/svg"></svg>
             </div>
             <div class="history">
-                <h2>Turns</h2>
+                <h2>Turns <span data-bind="text: totalMoves"></span></h2>
                 <table>
                     <thead>
                         <tr>
@@ -54,7 +54,27 @@
                 </form>
             </div>
         </div>
+        <div class="last-games">
+            <h2>Last Games</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Winner</th>
+                        <th>Moves</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="template: { name: 'last-games-templates', foreach: lastGames }"></tbody>
+            </table>
+        </div>
         <script type="text/javascript" src="knockout-2.1.0.js"></script>
         <script type="text/javascript" src="battleship.js"></script>
+        <script type="text/html" id="last-games-templates">
+            <tr>
+                <td data-bind="text: player"></td>
+                <td data-bind="text: moves"></td>
+                <td data-bind="text: date"></td>
+            </tr>
+        </script>
     </body>
 </html>

@@ -64,10 +64,14 @@ var ViewModel = function(status, humanName, aiName, humanShips, aiShips) {
     self.aiName = ko.observable(aiName);
 
     self.humanShips = ko.observableArray();
-    self.aiShips = ko.observableArray();
+    self.aiShips = ko.observableArray(aiShips);
 
     self.move = ko.observable("");
     self.moves = ko.observableArray();
+
+    self.totalMoves = ko.computed(function() {
+        return self.moves().length;
+    });
 
     self.lastGames = ko.observableArray();
 
@@ -124,7 +128,6 @@ var ViewModel = function(status, humanName, aiName, humanShips, aiShips) {
                 
                 self.endGame();
             }
-            
             self.move("");
         }
     }.bind(self);

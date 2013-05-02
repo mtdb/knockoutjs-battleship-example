@@ -1,0 +1,78 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Ubuntu', Helvetica;
+}
+
+body {
+    margin: 20px;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+header b {
+    padding: 0 8px;
+}
+
+button{
+    padding: 0 8px;
+}
+
+table, td {
+    border: 1px solid #333;
+}
+
+td {
+    padding: 2px 10px;
+}
+
+input {
+    border: 1px solid #333;
+}
+
+input.next-move {
+    width: 60px;
+}
+
+ul.quadrant {
+    list-style: none;
+}
+
+ul.quadrant li {
+    display: block;
+    float: left;
+    width: 60px;
+}
+
+ul.quadrant li:nth-child(10n+1) {
+    clear: left;
+}
+
+.board {
+    display: inline-block;
+}
+
+svg {
+    border: 1px solid #333;
+    width: 330px;
+    height: 330px;
+    margin-bottom: 20px;
+    background: url(grid.png)
+}
+
+.history {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+}
+
+.history table {
+    margin-bottom: 20px;
+}
+
+.last-games {
+    clear: both;
+    float: left;
+}

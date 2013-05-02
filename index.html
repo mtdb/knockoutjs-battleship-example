@@ -9,14 +9,20 @@
     <body>
         <header>
             <h1>Knockout-Battleship</h1>
-            <div>
+            <div data-bind="visible: status() == 'waiting'">
                 <b>Player Name</b>
-                <form>
+                <form data-bind="submit: startGame">
                     <input type="text" data-bind='value: humanName, valueUpdate: "afterkeydown"'>
+                    <button type="submit" data-bind="enable: humanName().length > 0">Start Game</button>
                 </form>
+                <ul class="quadrant" data-bind="foreach: quadrant">
+                    <li>
+                        <input type="checkbox" data-bind="checked: $parent.humanShips, attr: { value: $data }" ><b data-bind="text: $data"></b>
+                    </li>
+                </ul>
             </div>
         </header>
-        <div>
+        <div data-bind="visible: status() == 'running'">
             <div class="board">
                 <h3 data-bind='text: humanName'></h3>
                 <svg id="human" xmlns="http://www.w3.org/2000/svg"></svg>

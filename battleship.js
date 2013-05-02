@@ -34,8 +34,31 @@ function aiMove(vm) {
     vm.addMove(form);
 }
 
-var ViewModel = function(humanName, aiName, humanShips, aiShips) {
+function populateBoard() {
+    return ["C1","C2","C3"];
+}
+
+function drawShips(target,ships) {
+    ko.utils.arrayForEach(ships, function(ship) {
+        var coords = string2coords(ship);
+        var newShip = new Square(coords.x*30+5,coords.y*30+15,"#999");
+        document.getElementById(target).appendChild(newShip);
+    });
+}
+
+var ViewModel = function(status, humanName, aiName, humanShips, aiShips) {
     var self = this;
+
+    quadrant = ['A1','A2','A3','A4','A5','A6','A7','A8','A9','A10',
+                'B1','B2','B3','B4','B5','B6','B7','B8','B9','B10',
+                'C1','C2','C3','C4','C5','C6','C7','C8','C9','C10',
+                'D1','D2','D3','D4','D5','D6','D7','D8','D9','D10',
+                'E1','E2','E3','E4','E5','E6','E7','E8','E9','E10',
+                'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10',
+                'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10',
+                'J1','J2','J3','J4','J5','J6','J7','J8','J9','J10'];
+
+    self.status = ko.observable(status); // waiting running
 
     self.humanName = ko.observable(humanName);
     self.aiName = ko.observable(aiName);
@@ -47,6 +70,26 @@ var ViewModel = function(humanName, aiName, humanShips, aiShips) {
     self.moves = ko.observableArray();
 
     self.lastGames = ko.observableArray();
+
+    self.startGame = function() {
+        self.status("running");
+        self.aiShips(populateBoard());
+        drawShips("human",self.humanShips());
+        // drawShips("ai",self.aiShips());
+    }
+
+    self.endGame = function() {
+        self.status("waiting");
+        self.moves([]);
+        var svg = document.getElementById("human");
+        while (svg.lastChild) {
+            svg.removeChild(svg.lastChild);
+        }
+        svg = document.getElementById("ai");
+        while (svg.lastChild) {
+            svg.removeChild(svg.lastChild);
+        }
+    }
 
     self.addMove = function(form) {
         var target = form.elements["player"].value==self.humanName()?"ai":"human";
@@ -71,10 +114,21 @@ var ViewModel = function(humanName, aiName, humanShips, aiShips) {
             
             // hack pc turn
             if (target == "ai") aiMove(self);
+            
+            // Verify Winner
+            if ((vm.humanShips().length == 0 || vm.aiShips().length == 0) && target == "human") {
+                self.lastGames.push({
+                    'player':vm.aiShips().length==0?self.humanName():self.aiName(),
+                    'moves':Math.floor(self.moves().length/2),
+                    'date':new Date()});
+                
+                self.endGame();
+            }
+            
             self.move("");
         }
     }.bind(self);
 };
 
-var vm = new ViewModel("","PC",[],[]);
+var vm = new ViewModel("waiting", "", "PC", [], []);
 ko.applyBindings(vm);
